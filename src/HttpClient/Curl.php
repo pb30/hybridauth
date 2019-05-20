@@ -101,7 +101,7 @@ class Curl implements HttpClientInterface
     /**
     * {@inheritdoc}
     */
-    public function request($uri, $method = 'GET', $parameters = [], $headers = [])
+    public function request($uri, $method = 'GET', $parameters = [], $headers = [], $multipart = false)
     {
         $this->requestHeader = array_replace($this->requestHeader, (array) $headers);
 
@@ -131,7 +131,7 @@ class Curl implements HttpClientInterface
         }
 
         if ('POST' == $method) {
-            $body_content = http_build_query($parameters);
+            $body_content = $multipart ? $parameters : http_build_query($parameters);
             if (isset($this->requestHeader['Content-Type']) && $this->requestHeader['Content-Type'] == 'application/json') {
                 $body_content = json_encode($parameters);
             }
